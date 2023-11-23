@@ -13,27 +13,16 @@ jobs:
     name: Build and Deploy Job
     steps:
 
-      # 1. Configure AWS credentials
-      - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@v2
-        with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: ${{ secrets.AWS_REGION }}
-
-      # 2. Checkout Repository
       - name: Checkout Repository
         uses: actions/checkout@v3
         with:
           ref: release
 
-      # 3. Setup Node
       - name: Setup Node
         uses: actions/setup-node@v3
         with:
           node-version: '18.17.1'
 
-      # 4. Setup Cache
       - name: Setup Cache
         uses: actions/cache@v3
         with:
@@ -42,7 +31,6 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-node-
 
-      # 5. Build Angular
       - name: Build Angular Application
         run: |
           ls
@@ -50,12 +38,13 @@ jobs:
           npm install
           ng build
 
-      # 6. Copy to S3 bucket.
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
+
       - name: Copy to S3 Bucket
         run: |
-          aws s3 sync ./dist s3://bathrc-accounts-frontend --delete
-
-      # 7. (Optional) Invalidate CloudFront
-#      - name: Invalidate CloudFront
-#        run: |
-#          aws cloudfront create-invalidation --distribution-id <CLOUDFRONT DISTRIBUTION ID> --paths "/*"
+          aws s3 sync ./dist s3://my-s3-test-website-bucket
