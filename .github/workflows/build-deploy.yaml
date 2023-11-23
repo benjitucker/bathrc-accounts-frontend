@@ -1,5 +1,5 @@
 # Workflow name
-name: Continuous Deployment
+name: Build and S3 Deployment
 
 on:
   push:
@@ -25,7 +25,7 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v3
         with:
-          ref: main
+          ref: release
 
       # 3. Setup Node
       - name: Setup Node

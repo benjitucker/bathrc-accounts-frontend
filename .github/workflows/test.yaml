@@ -1,5 +1,5 @@
 # Workflow name
-name: Continuous Deployment
+name: Lint (TODO & Test)
 
 on:
   push:
@@ -22,8 +22,6 @@ jobs:
 
       - name: Checkout Repository
         uses: actions/checkout@v3
-        with:
-          ref: main
 
       - name: Setup Node ${{ matrix.node-version }}
         uses: actions/setup-node@v3
