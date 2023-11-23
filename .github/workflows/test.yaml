@@ -1,0 +1,47 @@
+# Workflow name
+name: Continuous Deployment
+
+on:
+  push:
+    branches:
+      - master
+      - main
+  pull_request:
+
+# The list of jobs to run
+jobs:
+  build_and_deploy_job:
+    runs-on: ubuntu-latest
+    name: Build Job
+
+    strategy:
+      matrix:
+        node-version: [18.x]
+
+    steps:
+
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+        with:
+          ref: main
+
+      - name: Setup Node ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: Setup Cache
+        uses: actions/cache@v3
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+
+      - name: Lint Angular Application
+        run: |
+          ls
+          npm install -g @angular/cli
+          npm install
+          ng lint
+#          ng test TODO
