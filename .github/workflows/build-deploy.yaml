@@ -47,4 +47,4 @@ jobs:
 
       - name: Copy to S3 Bucket
         run: |
-          aws s3 sync ./dist s3://my-s3-test-website-bucket
+          aws s3 sync ./dist s3://bathrc-accounts-frontend
