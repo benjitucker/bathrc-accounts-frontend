@@ -32,7 +32,8 @@ export class AuthService {
     domain: environment.domain,
     responseType: 'token id_token',
     audience: environment.audience,
-    redirectUri: environment.callback,
+    redirectUri: window.location.origin,
+//    redirectUri: environment.callback,
     scope: 'openid'
   });
 
