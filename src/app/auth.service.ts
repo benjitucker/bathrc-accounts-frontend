@@ -32,7 +32,7 @@ export class AuthService {
     domain: environment.domain,
     responseType: 'token id_token',
     audience: environment.audience,
-    redirectUri: window.location.origin + '/bathrc/ui',
+    redirectUri: window.location.origin + '/bathrc/ui/callback',
 //    redirectUri: environment.callback,
     scope: 'openid'
   });
